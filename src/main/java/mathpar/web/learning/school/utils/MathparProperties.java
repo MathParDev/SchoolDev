@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 
 @Getter
+@Slf4j
 @NoArgsConstructor
 public class MathparProperties {
     private String databaseUsername;
@@ -20,8 +22,11 @@ public class MathparProperties {
         var namespaceProperties = restTemplate.getForObject(secretmanagerUrlPrefix+"/getNamespaceProperties?namespace=school", SchoolProperties.class);
         if(namespaceProperties==null) throw new RuntimeException("Can't load authentication properties");
         this.databasePassword = namespaceProperties.databasePassword;
+        log.info("USERNAME: " + databasePassword);
         this.databaseUsername = namespaceProperties.databaseUsername;
+        log.info("PASSWORD: " + databaseUsername);
         this.databaseUrl = namespaceProperties.databaseUrl;
+        log.info("URL: " + databaseUrl);
 
         this.accountPrefix = namespaceProperties.accountUrl;
     }
